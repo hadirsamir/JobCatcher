@@ -7,8 +7,17 @@
 //
 
 import UIKit
-
+import SDWebImage
 class SearchCollectionViewCell: UICollectionViewCell {
+    
+    var jobResultObject : ResultsModel{
+        didSet{
+            companyTitle.text = jobResultObject.company
+            titleLabel.text = jobResultObject.title
+            locationLabel.text = jobResultObject.location
+            
+        }
+    }
     let logoImageView : UIImageView = {
         let iv = UIImageView()
         iv.layer.cornerRadius = 5
@@ -45,7 +54,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
     
     override init(frame:CGRect){
         super.init(frame: frame)
-        self.backgroundColor = .red
+        self.backgroundColor = UIColor(named: "backgroundCell")
+        
         self.addSubview(logoImageView)
         logoImageView.anchor(top: topAnchor, leading: nil, bottom: nil, trailing: trailingAnchor, padding: .init(top: 10, left:10 , bottom: 0, right: 10), size: .init(width: 80, height: 100))
         let labelsStackView = UIStackView(arrangedSubviews:[companyTitle,titleLabel,locationLabel])

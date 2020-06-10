@@ -14,13 +14,28 @@ class MainViewController: UICollectionViewController,UISearchBarDelegate {
    var searchController = UISearchController(searchResultsController: nil)
    var locationSearchBar = UISearchBar()
    let citySearchBar = UISearchBar()
+    private var jobResults = [ResultsModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = UIColor.white
+        collectionView.backgroundColor = UIColor(named: "backgroundColor")
         self.title = "GitHub Job Search"
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         setupSearchBar()
+        Service.shared.getResults(description: "Software Developer", location: "San Fracisco") { [weak self] result in
+            switch result{
+            case .success(let result):
+                print(result)
+                self?.jobResults = result
+                // update collectionView data
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
         // Do any additional setup after loading the view.
     }
     init(){
